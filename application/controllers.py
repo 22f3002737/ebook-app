@@ -12,7 +12,7 @@ def login():
     if this_user:
       if this_user.password == pwd:
         if this_user.type == "admin":
-          return render_template("admin_dash.html", this_user=this_user)
+          return redirect("/admin")
         else:
           return render_template("user_dash.html", this_user=this_user)
       else:
@@ -38,3 +38,50 @@ def register():
       db.session.commit()
     return "registered successfully"
   return render_template("register.html")
+
+@app.route("/admin")
+def admin():
+  users = len(User.query.all())-1
+  reqs = len(Ebook.query.filter_by(status="requested").all())
+  grants = len(Ebook.query.filter_by(status="granted").all())
+  avail = len(Ebook.query.filter_by(status="available").all())
+  this_user = User.query.filter_by(type="admin").first()
+  req_ebooks = Ebook.query.filter_by(status="requested").all()
+  return render_template("admin_dash.html", this_user=this_user,req_ebooks=req_ebooks,users=users,reqs=reqs,grants=grants,avail=avail)
+
+@app.route("/create-ebook", methods=["GET", "POST"])
+def create():
+  this_user= User.query.filter_by(type="admin").first()
+  if request.method == "POST":
+    name= request.form.get("name")
+    author = request.form.get("author")
+    url = request.form.get("url")
+    ebook = Ebook(name=name, author=author,url=url)
+    db.session.add(ebook)
+    db.session.commit()
+    return render_template("admin_dash.html",this_user=this_user)
+  return render_template("create_eb.html")
+
+@app.route("/request-ebook/<int:user_id>")#button in user dashboard
+def request_ebook(user_id):
+  this_user = User.query.filter_by(id=user_id).first()
+  ebooks = Ebook.query.filter_by(status="available").all()
+  return render_template("request.html", this_user=this_user, ebooks=ebooks)
+
+@app.route("/request/<int:ebook_id>/<int:user_id>")#button in request.html
+def req_eb(ebook_id,user_id):
+  this_user = User.query.get(user_id)
+  ebook = Ebook.query.get(ebook_id)
+  ebook.status="requested"
+  ebook.user_id = user_id
+  db.session.commit()
+  return render_template("user_dash.html", this_user=this_user)
+
+@app.route("/grant/<int:ebook_id>/<int:user_id>")
+def grant_eb(ebook_id,user_id):
+  this_user = User.query.get(user_id)
+  # ebook = Ebook.query.get(ebook_id)
+  ebook= Ebook.query.filter_by(id=ebook_id,user_id=user_id).first()
+  ebook.status="granted"
+  db.session.commit()
+  return redirect("/admin")

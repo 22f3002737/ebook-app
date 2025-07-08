@@ -14,4 +14,4 @@ class Ebook(db.Model):
   author = db.Column(db.String(), nullable=False)
   url = db.Column(db.String(), nullable=False)
   status = db.Column(db.String(), default='available')
-  user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+  user_id = db.Column(db.Integer, db.ForeignKey('user.id'), default=None)

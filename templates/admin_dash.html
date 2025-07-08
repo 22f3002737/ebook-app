@@ -24,7 +24,7 @@
                 <a class="nav-link active" aria-current="page" href="#">Summary</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Log Out</a>
+                <a class="nav-link active" aria-current="page" href="/login">Log Out</a>
               </li>
             </ul>
             <form class="d-flex">
@@ -48,48 +48,41 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <th scope="row">1</th>
-                <td>Book 1</td>
-                <td>Author 1</td>
-                <td>User 1</td>
-                <td class="d-flex justify-content-center ">
-                  <a href="" class="btn btn-info mx-2">Grant</a>
-                </td>
-              </tr>
-              <tr>
-                <th scope="row">2</th>
-                <td>Book 2</td>
-                <td>Author 2</td>
-                <td>User 2</td>
-                <td class="d-flex justify-content-center">
-                  <a href="" class="btn btn-info mx-2">Grant</a>
-                </td>
-              </tr>
+              {% for ebook in req_ebooks %}
+                <tr>
+                  <th scope="row">{{ebook.id}}</th>
+                  <td>{{ebook.name}}</td>
+                  <td>{{ebook.author}}</td>
+                  <td>{{ebook.bearer.username}}</td><!-- ebook.bearer will give user object --> 
+                  <td class="d-flex justify-content-center ">
+                    <a href="/grant/{{ebook.id}}/{{ebook.user_id}}" class="btn btn-info mx-2">Grant</a>
+                  </td>
+                </tr>
+              {% endfor %}
             </tbody>
           </table>
         </div>
         <div class="d-flex justify-content-evenly text-center">
           <div class="card bg-info p-3">
             <h5>Users</h5>
-            <h1>5</h1>
+            <h1>{{users}}</h1>
           </div>
           <div class="card bg-warning p-3">
             <h5>Requests</h5>
-            <h1>4</h1>
+            <h1>{{reqs}}</h1>
           </div>
           <div class="card bg-success p-3">
             <h5>Granted</h5>
-            <h1>3</h1>
+            <h1>{{grants}}</h1>
           </div>
           <div class="card bg-secondary p-3">
             <h5>Available</h5>
-            <h1>10</h1>
+            <h1>{{avail}}</h1>
           </div>
         </div>
         
         <div class="text-end mx-2 my-5">
-          <a href="" class="btn btn-primary">Request E-book</a>
+          <a href="/create-ebook" class="btn btn-primary">Create E-book</a>
         </div>
       </div>
     </div>
