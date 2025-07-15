@@ -13,7 +13,7 @@
 
 <body>
   <div id="main">
-    <div id="canvas">
+    <div id="canvas" class="overflow-auto">
       <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
           <a class="navbar-brand" href="#">Welcome {{this_user.username}}</a>
@@ -21,22 +21,27 @@
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Summary</a>
+                <a class="nav-link active" aria-current="page" href="/summary">Summary</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="/login">Log Out</a>
               </li>
             </ul>
-            <form class="d-flex">
-              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-              <button class="btn btn-outline-success" type="submit">Search</button>
+            <form class="d-flex" action="/search">
+              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search">
+              <select class="form-select me-2" aria-label="Default select example" name="key">
+                    <option selected>select</option>
+                    <option value="user">User</option>
+                    <option value="e-book">E-book</option>
+              </select>
+              <input class="btn btn-outline-success" type="submit" value="Search">
             </form>
           </div>
         </div>
       </nav>
       <div id="content">
         <h3 class="headings">Requested E-books</h3>
-        <div class="table">
+        <div class="table" style="max-height:500px;overflow-y: scroll;">
           <table class="table border">
             <thead>
               <tr>

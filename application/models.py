@@ -15,3 +15,6 @@ class Ebook(db.Model):
   url = db.Column(db.String(), nullable=False)
   status = db.Column(db.String(), default='available')
   user_id = db.Column(db.Integer, db.ForeignKey('user.id'), default=None)
+
+  #<user>.ebooks =[<>,<>]
+  #<ebook>.bearer = <user>

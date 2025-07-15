@@ -1,10 +1,11 @@
 *{
   margin:0px;
 }
-#main,#canvas{
+#canvas{
   border: 2px solid black;
+}
+#main,#canvas{
   margin-top: 10px;
-
 }
 #canvas{
   width: 60%;
